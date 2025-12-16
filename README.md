@@ -41,3 +41,10 @@ Double-click `build_exe.bat` (if available) or run:
 pyinstaller --noconfirm --onefile --windowed --name "FileRenamer" --clean gui_app.py
 ```
 The standalone `.exe` will be in the `dist` folder.
+
+### Creating a Setup Wizard (Installer)
+To create a standard `setup.exe` that installs the program to "Program Files":
+1.  **Download Inno Setup**: [jrsoftware.org/isdl.php](https://jrsoftware.org/isdl.php).
+2.  **Build the Exe**: Run `build_exe.bat` first to ensure `dist/FileRenamer.exe` exists.
+3.  **Compile Script**: Right-click `setup.iss` and choose "Compile".
+4.  **Result**: The installer (`FileRenamer_Setup.exe`) will appear in the `installer` folder.
