@@ -28,7 +28,15 @@ def folder_name_rule(name: str) -> str:
     """Folders: remove trailing (number), then ALL CAPS."""
     if not name:
         return name
-    return clean_number_suffix(name).upper()
+    
+    name = clean_number_suffix(name)
+    
+    # Check for "Number. Space Rest" (e.g. "2. foldername")
+    match = re.match(r"^(\d+\.)\s+(.*)", name)
+    if match:
+        return match.group(1) + match.group(2).upper()
+
+    return name.upper()
 
 
 def file_name_rule(name: str) -> str:
@@ -51,7 +59,7 @@ def file_name_rule(name: str) -> str:
 
     stem = clean_number_suffix(stem)
     stem = stem.lower()
-    stem = stem[0].upper() + stem[1:] if stem else stem
+    stem = stem.title()
 
     return stem + suffix
 
