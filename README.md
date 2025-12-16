@@ -53,4 +53,8 @@ We use `pynsist` to create a standard Windows installer. No external software is
     ```bash
     pynsist installer.cfg
     ```
-3.  **Result**: The installer will be in the `build/nsis` folder.
+### Distributing the App
+The `dist/FileRenamer.exe` file is **standalone**. 
+- **No Python needed**: The end user does **NOT** need to install Python.
+- **No Libraries needed**: All dependencies are included inside the `.exe`.
+- **Just Run**: You can copy this single file to any Windows computer and it will work immediately.
