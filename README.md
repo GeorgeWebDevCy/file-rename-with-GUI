@@ -43,8 +43,14 @@ pyinstaller --noconfirm --onefile --windowed --name "FileRenamer" --clean gui_ap
 The standalone `.exe` will be in the `dist` folder.
 
 ### Creating a Setup Wizard (Installer)
-To create a standard `setup.exe` that installs the program to "Program Files":
-1.  **Download Inno Setup**: [jrsoftware.org/isdl.php](https://jrsoftware.org/isdl.php).
-2.  **Build the Exe**: Run `build_exe.bat` first to ensure `dist/FileRenamer.exe` exists.
-3.  **Compile Script**: Right-click `setup.iss` and choose "Compile".
-4.  **Result**: The installer (`FileRenamer_Setup.exe`) will appear in the `installer` folder.
+We use `pynsist` to create a standard Windows installer. No external software is required (it handles everything).
+
+1.  **Install pynsist**:
+    ```bash
+    pip install pynsist
+    ```
+2.  **Build Installer**:
+    ```bash
+    pynsist installer.cfg
+    ```
+3.  **Result**: The installer will be in the `build/nsis` folder.
