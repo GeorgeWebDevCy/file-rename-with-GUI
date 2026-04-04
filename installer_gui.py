@@ -8,9 +8,11 @@ from tkinter import messagebox
 
 try:
     import winshell
+    import pythoncom
     from win32com.client import Dispatch
 except ImportError:
     winshell = None
+    pythoncom = None
     Dispatch = None
 
 # Configure appearance
@@ -97,6 +99,7 @@ class InstallerApp(ctk.CTk):
         thread.start()
 
     def run_installation(self):
+        pythoncom.CoInitialize()
         try:
             # 1. Prepare Directory
             if self.install_dir.exists():
@@ -127,6 +130,8 @@ class InstallerApp(ctk.CTk):
 
         except Exception as e:
             self.after(0, lambda: self.installation_failed(str(e)))
+        finally:
+            pythoncom.CoUninitialize()
 
     def update_progress(self, val):
         self.after(0, lambda: self.progress.set(val))
