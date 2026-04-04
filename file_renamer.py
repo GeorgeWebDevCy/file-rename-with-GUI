@@ -34,7 +34,7 @@ def folder_name_rule(name: str) -> str:
     # Check for "Number. Space Rest" (e.g. "2. foldername")
     match = re.match(r"^(\d+\.)\s+(.*)", name)
     if match:
-        return match.group(1) + match.group(2).upper()
+        return f"{match.group(1)} {match.group(2).upper()}"
 
     return name.upper()
 
@@ -58,8 +58,7 @@ def file_name_rule(name: str) -> str:
         return name
 
     stem = clean_number_suffix(stem)
-    stem = stem.lower()
-    stem = stem.title()
+    stem = stem.lower().capitalize()
 
     return stem + suffix
 
@@ -166,11 +165,11 @@ def forced_temp_rename_with_overwrite(src: Path, final_dst: Path, dry_run: bool,
         else:
             tmp_path.rename(final_dst)
 
-        log_callback(f"      ✔ RENAMED {kind}")
+        log_callback(f"      OK: renamed {kind}")
         return True
 
     except PermissionError as e:
-        log_callback(f"      ✖ PERMISSION ERROR: {e}")
+        log_callback(f"      PERMISSION ERROR: {e}")
         # attempt to rollback if tmp exists
         try:
             if tmp_path.exists() and not src.exists():
@@ -178,7 +177,7 @@ def forced_temp_rename_with_overwrite(src: Path, final_dst: Path, dry_run: bool,
         except Exception:
             pass
     except OSError as e:
-        log_callback(f"      ✖ OS ERROR: {e}")
+        log_callback(f"      OS ERROR: {e}")
         # attempt to rollback if tmp exists
         try:
             if tmp_path.exists() and not src.exists():
@@ -213,12 +212,12 @@ def rename_tree(root: Path, dry_run: bool, log_callback=default_logger):
         current_root = Path(current_root)
         visited_dirs += 1
 
-        log_callback(f"\n📂 Visiting folder:")
+        log_callback("\nVisiting folder:")
         log_callback(f"   {current_root}")
 
         # Files first
         if filenames:
-            log_callback("   📄 Files:")
+            log_callback("   Files:")
         for fname in filenames:
             visited_files += 1
             src = current_root / fname
@@ -230,7 +229,7 @@ def rename_tree(root: Path, dry_run: bool, log_callback=default_logger):
 
         # Then folders
         if dirnames:
-            log_callback("   📁 Subfolders:")
+            log_callback("   Subfolders:")
         for dname in dirnames:
             src = current_root / dname
             desired = current_root / folder_name_rule(dname)

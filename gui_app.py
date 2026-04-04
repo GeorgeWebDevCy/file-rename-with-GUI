@@ -73,7 +73,7 @@ class FileRenamerApp(ctk.CTk):
         """Thread-safe logging to the text box."""
         def _update():
             self.textbox_log.configure(state="normal")
-            self.textbox_log.insert("end", str(message) + "\n")
+            self.textbox_log.insert("end", str(message))
             self.textbox_log.see("end")
             self.textbox_log.configure(state="disabled")
         
