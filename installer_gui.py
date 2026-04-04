@@ -2,11 +2,16 @@ import customtkinter as ctk
 import os
 import sys
 import shutil
-import winshell
-from win32com.client import Dispatch
 from pathlib import Path
 import threading
-import time
+from tkinter import messagebox
+
+try:
+    import winshell
+    from win32com.client import Dispatch
+except ImportError:
+    winshell = None
+    Dispatch = None
 
 # Configure appearance
 ctk.set_appearance_mode("System")
@@ -76,12 +81,19 @@ class InstallerApp(ctk.CTk):
         shortcut.save()
 
     def start_install(self):
+        if winshell is None or Dispatch is None:
+            messagebox.showerror(
+                "Missing Dependencies",
+                "Installer dependencies are missing. Install 'winshell' and 'pywin32' to use installer_gui.py.",
+            )
+            return
+
         self.btn_install.configure(state="disabled")
         self.btn_cancel.configure(state="disabled")
         self.info_lbl.configure(text="Installing...")
         self.progress.pack(pady=20)
         
-        thread = threading.Thread(target=self.run_installation)
+        thread = threading.Thread(target=self.run_installation, daemon=True)
         thread.start()
 
     def run_installation(self):

@@ -104,7 +104,7 @@ class FileRenamerApp(ctk.CTk):
         self.textbox_log.delete("1.0", "end")
         self.textbox_log.configure(state="disabled")
 
-        thread = threading.Thread(target=self.worker_task, args=(dry_run,))
+        thread = threading.Thread(target=self.worker_task, args=(dry_run,), daemon=True)
         thread.start()
 
     def worker_task(self, dry_run):
